@@ -1,0 +1,15 @@
+version: "3"
+services:
+  playground:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        - USER=${USER:-pi}
+    command: bash
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./install-devtools.sh:/home/$USER/install-devtools.sh
+      - ./install-devtools.yml:/home/$USER/install-devtools.yml
+      - ./templates:/home/$USER/templates
