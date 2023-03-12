@@ -16,14 +16,15 @@
         update_cache: yes
         name:
           - bc
+          - curl
           - fzf
           - git
           - jq
-          - neovim
           - ripgrep
           - tmux
           - tree
           - wget
+          - xz-utils
           - zsh
         state: present
       register: aptout
@@ -36,11 +37,24 @@
         executable: /bin/bash
     - name: Configure Neovim
       ansible.builtin.shell: |
-        curl -sfLo {{ nvim_cfg_dir }}/init.vim --create-dirs {{ nvim_cfg_url }}
-        curl -sfLo {{ vim_plug_default_dir }}/nvim/site/autoload/plug.vim --create-dirs {{ vim_plug_url }}
-        nvim --headless +PlugInstall +qall
+        NVIM_DEB_FILE=nvim-linux64.deb
+        NVIM_DL_URL="https://github.com/neovim/neovim/releases/download/stable/$NVIM_DEB_FILE"
+
+        wget --directory-prefix /tmp/ $NVIM_DL_URL
+        sudo dpkg -i /tmp/nvim-linux64.deb
+
+        git clone https://github.com/nicomiguelino/nvim.git ~/.config/nvim
       args:
         executable: /bin/bash
+    - name: Install NodeJS
+      ansible.builtin.shell: |
+        ARCHIVE_FILE=node-v18.14.2-linux-x64.tar.xz
+        NODEJS_DL_URL=https://nodejs.org/dist/v18.14.2/$ARCHIVE_FILE
+        NODEJS_HOME=$HOME/node
+
+        wget --directory-prefix /tmp/ $NODEJS_DL_URL
+        mkdir -p $NODEJS_HOME
+        tar -xf /tmp/$ARCHIVE_FILE -C $NODEJS_HOME --strip-components=1
     - name: Install Docker Buildx
       ansible.builtin.shell: |
         mkdir -p ~/.docker/cli-plugins
@@ -67,19 +81,20 @@
     - name: Set Zsh as the default shell
       ansible.builtin.shell: |
         chsh -s /usr/bin/zsh
+        touch ~/.zshrc
     - name: Create a directory for additional Zsh configs
       ansible.builtin.file:
         path: "{{ lookup('env', 'HOME') }}/.zshrc.d"
         state: directory
     - name: Create a Zsh script for additional configs
       ansible.builtin.template:
-        src: templates/zshrc.d/anthias.zsh.j2
-        dest: "{{ lookup('env', 'HOME') }}/.zshrc.d/anthias.zsh"
+        src: templates/zshrc.d/main.zsh.j2
+        dest: "{{ lookup('env', 'HOME') }}/.zshrc.d/main.zsh"
     - name: Configure Zsh
       ansible.builtin.blockinfile:
         path: "{{ lookup('env', 'HOME') }}/.zshrc"
         block: |
-          source ~/.zshrc.d/anthias.zsh
+          source ~/.zshrc.d/main.zsh
     - name: Install Oh My Tmux!
       ansible.builtin.shell: |
         cd

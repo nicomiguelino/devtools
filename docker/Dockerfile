@@ -4,7 +4,8 @@ RUN apt-get -y update && \
     apt-get -y install --no-install-recommends \
         python3 \
         python3-dev \
-        python3-pip && \
+        python3-pip \
+        sudo && \
     apt-get clean
 
 RUN pip install "cryptography==38.0.2"
