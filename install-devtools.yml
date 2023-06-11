@@ -34,7 +34,7 @@
     - name: Configure Neovim
       ansible.builtin.shell: |
         NVIM_DEB_FILE=nvim-linux64.deb
-        NVIM_DL_URL="https://github.com/neovim/neovim/releases/download/stable/$NVIM_DEB_FILE"
+        NVIM_DL_URL="https://github.com/neovim/neovim/releases/download/v0.8.3/$NVIM_DEB_FILE"
 
         wget --directory-prefix /tmp/ $NVIM_DL_URL
         sudo dpkg -i /tmp/nvim-linux64.deb
