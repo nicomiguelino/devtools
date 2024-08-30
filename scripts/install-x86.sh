@@ -47,7 +47,7 @@ function display_section() {
         "${TITLE}"
 }
 
-function install_packages() {
+function install_apt_packages() {
     APT_PACKAGES=(
         "curl"
         "git"
@@ -58,19 +58,58 @@ function install_packages() {
         "ripgrep"
         "fzf"
         "tree"
+        "htop"
     )
 
     sudo apt update -y
     sudo apt-get install -y "${APT_PACKAGES[@]}"
 }
 
+function install_neovim() {
+    local RELEASES_URL="https://github.com/neovim/neovim/releases"
+    local ARCHIVE="nvim-linux64.tar.gz"
+    local DOWNLOAD_URL="$RELEASES_URL/download/v0.10.1/$ARCHIVE"
+    local NVIM_HOME="$HOME/nvim-linux64"
+    local ARCHIVE_PATH="/tmp/$ARCHIVE"
+
+    if [ -d $NVIM_HOME ] && [ -x $NVIM_HOME/bin/nvim ]; then
+        gum style "Neovim is already installed." \
+            --foreground "#FF00FF" | \
+            gum format
+        export PATH=$NVIM_HOME/bin:$PATH
+    else
+        wget -O $ARCHIVE_PATH $DOWNLOAD_URL
+        tar -xzf $ARCHIVE_PATH -C $HOME
+    fi
+
+    if [[ "$PATH" =~ "$NVIM_HOME" ]]; then
+        gum style "Neovim is already in the \$PATH" \
+            --foreground "#FF00FF" | \
+            gum format
+    else
+        echo "export PATH=$NVIM_HOME/bin:\$PATH" >> $HOME/.bashrc
+    fi
+
+    rm -f $ARCHIVE_PATH
+}
+
+function refresh_bashrc() {
+    source $HOME/.bashrc
+}
+
 function main() {
     install_prerequisites && clear
+    source $HOME/.bashrc
 
     display_banner "Install x86 Development Tools"
 
-    display_section "Install Packages"
-    install_packages
+    display_section "Install Packages via APT"
+    install_apt_packages
+
+    display_section "Install Neovim"
+    install_neovim
+
+    echo
 }
 
 main
