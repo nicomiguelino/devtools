@@ -93,10 +93,6 @@ function install_neovim() {
     rm -f $ARCHIVE_PATH
 }
 
-function refresh_bashrc() {
-    source $HOME/.bashrc
-}
-
 function main() {
     install_prerequisites && clear
     source $HOME/.bashrc
