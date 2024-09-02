@@ -131,8 +131,24 @@ function install_oh_my_bash() {
             --foreground "212" | \
             gum format
     else
-        bash -c "$(curl -fsSL $INSTALL_URL)"
+        bash -c "$(curl -fsSL $INSTALL_URL)" --unattended
     fi
+}
+
+function install_oh_my_tmux() {
+    local OMT_REPO_URL="https://github.com/gpakosz/.tmux.git"
+
+    if [ -d $HOME/.tmux ]; then
+        gum style "Oh My Tmux is already installed." \
+            --foreground "212" | \
+            gum format
+        return
+    fi
+
+    cd
+    git clone $OMT_REPO_URL
+    ln -s -f .tmux/.tmux.conf
+    cp .tmux/.tmux.conf.local .
 }
 
 function main() {
@@ -144,14 +160,17 @@ function main() {
     display_section "Install Packages via APT"
     install_apt_packages
 
+    display_section "Install Oh My Bash"
+    install_oh_my_bash
+
     display_section "Install Neovim"
     install_neovim
 
     display_section "Install Node.js"
     install_nodejs
 
-    display_section "Install Oh My Bash"
-    install_oh_my_bash
+    display_section "Install Oh My Tmux"
+    install_oh_my_tmux
 
     echo
 }
