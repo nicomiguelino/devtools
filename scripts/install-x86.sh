@@ -74,7 +74,7 @@ function install_neovim() {
 
     if [ -d $NVIM_HOME ] && [ -x $NVIM_HOME/bin/nvim ]; then
         gum style "Neovim is already installed." \
-            --foreground "#FF00FF" | \
+            --foreground "212" | \
             gum format
         export PATH=$NVIM_HOME/bin:$PATH
     else
@@ -84,10 +84,39 @@ function install_neovim() {
 
     if [[ "$PATH" =~ "$NVIM_HOME" ]]; then
         gum style "Neovim is already in the \$PATH" \
-            --foreground "#FF00FF" | \
+            --foreground "212" | \
             gum format
     else
         echo "export PATH=$NVIM_HOME/bin:\$PATH" >> $HOME/.bashrc
+    fi
+
+    rm -f $ARCHIVE_PATH
+}
+
+function install_nodejs() {
+    local VERSION="v20.17.0"
+    local DIST_URL="https://nodejs.org/dist"
+    local NODE_HOME="$HOME/node-$VERSION-linux-x64"
+    local ARCHIVE="node-${VERSION}-linux-x64.tar.xz"
+    local DOWNLOAD_URL="${DIST_URL}/${VERSION}/${ARCHIVE}"
+    local ARCHIVE_PATH="/tmp/$ARCHIVE"
+
+    if [ -d $NODE_HOME ] && [ -x $NODE_HOME/bin/node ]; then
+        gum style "Node.js is already installed." \
+            --foreground "212" | \
+            gum format
+        export PATH=$NODE_HOME/bin:$PATH
+    else
+        wget -O $ARCHIVE_PATH $DOWNLOAD_URL
+        tar -xf $ARCHIVE_PATH -C $HOME
+    fi
+
+    if [[ "$PATH" =~ "$NODE_HOME" ]]; then
+        gum style "Node.js is already in the \$PATH" \
+            --foreground "212" | \
+            gum format
+    else
+        echo "export PATH=$NODE_HOME/bin:\$PATH" >> $HOME/.bashrc
     fi
 
     rm -f $ARCHIVE_PATH
@@ -104,6 +133,9 @@ function main() {
 
     display_section "Install Neovim"
     install_neovim
+
+    display_section "Install Node.js"
+    install_nodejs
 
     echo
 }
