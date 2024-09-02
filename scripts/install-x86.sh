@@ -93,6 +93,17 @@ function install_neovim() {
     rm -f $ARCHIVE_PATH
 }
 
+function configure_neovim() {
+    if [ -d ~/.config/nvim ]; then
+        gum style "Neovim is already configured." \
+            --foreground "212" | \
+            gum format
+        return
+    fi
+
+    git clone https://github.com/nicomiguelino/nvim.git ~/.config/nvim
+}
+
 function install_nodejs() {
     local VERSION="v20.17.0"
     local DIST_URL="https://nodejs.org/dist"
@@ -165,6 +176,9 @@ function main() {
 
     display_section "Install Neovim"
     install_neovim
+
+    display_section "Configure Neovim"
+    configure_neovim
 
     display_section "Install Node.js"
     install_nodejs
