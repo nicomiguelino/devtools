@@ -122,6 +122,19 @@ function install_nodejs() {
     rm -f $ARCHIVE_PATH
 }
 
+function install_oh_my_bash() {
+    local GITHUB_RAW_BASE="https://raw.githubusercontent.com"
+    local INSTALL_URL="$GITHUB_RAW_BASE/ohmybash/oh-my-bash/master/tools/install.sh"
+
+    if [ -d $HOME/.oh-my-bash ]; then
+        gum style "Oh My Bash is already installed." \
+            --foreground "212" | \
+            gum format
+    else
+        bash -c "$(curl -fsSL $INSTALL_URL)"
+    fi
+}
+
 function main() {
     install_prerequisites && clear
     source $HOME/.bashrc
@@ -136,6 +149,9 @@ function main() {
 
     display_section "Install Node.js"
     install_nodejs
+
+    display_section "Install Oh My Bash"
+    install_oh_my_bash
 
     echo
 }
