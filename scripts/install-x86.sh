@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+GITHUB_RAW_BASE="https://raw.githubusercontent.com"
+
 function install_prerequisites() {
     if [ -f /usr/bin/gum ]; then
         return
@@ -134,7 +136,6 @@ function install_nodejs() {
 }
 
 function install_oh_my_bash() {
-    local GITHUB_RAW_BASE="https://raw.githubusercontent.com"
     local INSTALL_URL="$GITHUB_RAW_BASE/ohmybash/oh-my-bash/master/tools/install.sh"
 
     if [ -d $HOME/.oh-my-bash ]; then
@@ -162,6 +163,14 @@ function install_oh_my_tmux() {
     cp .tmux/.tmux.conf.local .
 }
 
+function configure_oh_my_tmux() {
+    local REPOSITORY="nicomiguelino/devtools"
+    local CONFIG_FILE=".tmux.conf.local"
+    local DOWNLOAD_URL="$GITHUB_RAW_BASE/$REPOSITORY/main/common/$CONFIG_FILE"
+
+    wget -O $HOME/$CONFIG_FILE $DOWNLOAD_URL
+}
+
 function main() {
     install_prerequisites && clear
     source $HOME/.bashrc
@@ -185,6 +194,9 @@ function main() {
 
     display_section "Install Oh My Tmux"
     install_oh_my_tmux
+
+    display_section "Configure Oh My Tmux"
+    configure_oh_my_tmux
 
     echo
 }
