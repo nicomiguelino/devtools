@@ -79,7 +79,6 @@ function install_oh_my_bash() {
 function get_raspberry_pi_version() {
     local PI_MODEL=$(cat /proc/device-tree/model)
 
-    # if $PI_MODEL has "Raspberry Pi 4" in it, then set $PI_VERSION to 'pi4'
     if [[ $PI_MODEL == *"Raspberry Pi 4"* ]]; then
         PI_VERSION="pi4"
     elif [[ $PI_MODEL == *"Raspberry Pi 3"* ]]; then
@@ -121,13 +120,7 @@ function install_nodejs() {
         tar -xf $ARCHIVE_PATH -C $HOME
     fi
 
-    if [[ "$PATH" =~ "$NODE_HOME" ]]; then
-        gum style "Node.js is already in the \$PATH" \
-            --foreground "212" | \
-            gum format
-    else
-        echo "export PATH=$NODE_HOME/bin:\$PATH" >> $HOME/.bashrc
-    fi
+    sudo ln -s $NODE_HOME/bin/node /usr/local/bin/node
 
     rm -f $ARCHIVE_PATH
 }
@@ -144,7 +137,7 @@ function main() {
     install_oh_my_bash
 
     display_section "Install Node.js"
-    # install_nodejs
+    install_nodejs
 }
 
 main
