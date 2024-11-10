@@ -48,8 +48,8 @@ if ! [ "$(which ansible)"  ]; then
         python3-dev \
         python3-pip
 
-    sudo pip install cryptography==38.0.2
-    sudo pip install "$ANSIBLE_VERSION"
+    sudo pip install cryptography==38.0.2 --break-system-packages
+    sudo pip install "$ANSIBLE_VERSION" --break-system-packages
 fi
 
 if [[ "$MODE" == "dev" ]]; then
