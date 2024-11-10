@@ -74,12 +74,42 @@ function install_oh_my_bash() {
     fi
 }
 
+function get_raspberry_pi_version() {
+    local PI_MODEL=$(cat /proc/device-tree/model)
+
+    # if $PI_MODEL has "Raspberry Pi 4" in it, then set $PI_VERSION to 'pi4'
+    if [[ $PI_MODEL == *"Raspberry Pi 4"* ]]; then
+        PI_VERSION="pi4"
+    elif [[ $PI_MODEL == *"Raspberry Pi 3"* ]]; then
+        PI_VERSION="pi3"
+    else
+        gum style "Unsupported Raspberry Pi model: $PI_MODEL" \
+            --foreground "196" | \
+            gum format
+        exit 1
+    fi
+
+    echo $PI_VERSION
+}
+
+function install_nodejs() {
+    local VERSION="v20.17.0"
+    local DIST_URL="https://nodejs.org/dist"
+    local NODE_HOME="$HOME/node-$VERSION-linux-x64"
+    local ARCHIVE="node-${VERSION}-linux-x64.tar.xz"
+    local DOWNLOAD_URL="${DIST_URL}/${VERSION}/${ARCHIVE}"
+    local ARCHIVE_PATH="/tmp/$ARCHIVE"
+}
+
 function main() {
     install_prerequisites && clear
 
     display_banner "Install Raspberry Pi Development Tools"
 
     display_section "Install Oh My Bash"
+
+    RASPBERRY_PI_VERSION=$(get_raspberry_pi_version)
+    echo "Raspberry Pi version: $RASPBERRY_PI_VERSION"
 }
 
 main
