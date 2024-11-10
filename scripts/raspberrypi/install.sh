@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+GITHUB_RAW_BASE="https://raw.githubusercontent.com"
+
 function install_prerequisites() {
     if [ -f /usr/bin/gum ]; then
         return
