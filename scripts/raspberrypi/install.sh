@@ -93,12 +93,41 @@ function get_raspberry_pi_version() {
 }
 
 function install_nodejs() {
-    local VERSION="v20.17.0"
+    local VERSION="v22.11.0"
     local DIST_URL="https://nodejs.org/dist"
-    local NODE_HOME="$HOME/node-$VERSION-linux-x64"
-    local ARCHIVE="node-${VERSION}-linux-x64.tar.xz"
+
+    local RASPBERRY_PI_VERSION=$(get_raspberry_pi_version)
+    if [[ $RASPBERRY_PI_VERSION == "pi4" ]]; then
+        local PLATFORM="arm64"
+    else
+        local PLATFORM="armv7l"
+    fi
+
+    local ARCHIVE="node-${VERSION}-linux-${PLATFORM}.tar.xz"
+    local NODE_HOME="$HOME/node-$VERSION-linux-$PLATFORM"
+
     local DOWNLOAD_URL="${DIST_URL}/${VERSION}/${ARCHIVE}"
     local ARCHIVE_PATH="/tmp/$ARCHIVE"
+
+    if [ -d $NODE_HOME ] && [ -x $NODE_HOME/bin/node ]; then
+        gum style "Node.js is already installed." \
+            --foreground "212" | \
+            gum format
+        export PATH=$NODE_HOME/bin:$PATH
+    else
+        wget -O $ARCHIVE_PATH $DOWNLOAD_URL
+        tar -xf $ARCHIVE_PATH -C $HOME
+    fi
+
+    if [[ "$PATH" =~ "$NODE_HOME" ]]; then
+        gum style "Node.js is already in the \$PATH" \
+            --foreground "212" | \
+            gum format
+    else
+        echo "export PATH=$NODE_HOME/bin:\$PATH" >> $HOME/.bashrc
+    fi
+
+    rm -f $ARCHIVE_PATH
 }
 
 function main() {
@@ -106,10 +135,14 @@ function main() {
 
     display_banner "Install Raspberry Pi Development Tools"
 
-    display_section "Install Oh My Bash"
+    display_section "Install Packages via APT"
+    install_apt_packages
 
-    RASPBERRY_PI_VERSION=$(get_raspberry_pi_version)
-    echo "Raspberry Pi version: $RASPBERRY_PI_VERSION"
+    display_section "Install Oh My Bash"
+    install_oh_my_bash
+
+    display_section "Install Node.js"
+    # install_nodejs
 }
 
 main
