@@ -120,7 +120,13 @@ function install_nodejs() {
         tar -xf $ARCHIVE_PATH -C $HOME
     fi
 
-    sudo ln -s $NODE_HOME/bin/node /usr/local/bin/node
+    if [[ "$PATH" =~ "$NODE_HOME" ]]; then
+        gum style "Node.js is already in the \$PATH" \
+            --foreground "212" | \
+            gum format
+    else
+        echo "export PATH=$NODE_HOME/bin:\$PATH" >> $HOME/.bashrc
+    fi
 
     rm -f $ARCHIVE_PATH
 }
