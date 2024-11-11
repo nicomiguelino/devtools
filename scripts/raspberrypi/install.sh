@@ -104,7 +104,13 @@ function install_nodejs() {
     local DIST_URL="https://nodejs.org/dist"
 
     local RASPBERRY_PI_VERSION=$(get_raspberry_pi_version)
-    if [[ $RASPBERRY_PI_VERSION =~ "pi4|pi5" ]]; then
+    if [[ $RASPBERRY_PI_VERSION =~ ^(pi4|pi5)$ ]]; then
+        local PLATFORM="arm64"
+    else
+        local PLATFORM="armv7l"
+    fi
+    # if either pi4 or pi5
+    if
         local PLATFORM="arm64"
     else
         local PLATFORM="armv7l"
