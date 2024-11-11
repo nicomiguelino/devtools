@@ -131,6 +131,33 @@ function install_nodejs() {
     rm -f $ARCHIVE_PATH
 }
 
+function install_snapd() {
+    if [ -x /usr/bin/snap ]; then
+        gum style "Snapd is already installed." \
+            --foreground "212" | \
+            gum format
+        return
+    fi
+
+    sudo apt update -y && \
+    sudo apt install -y snapd
+}
+
+function install_neovim() {
+    sudo snap install nvim --classic
+}
+
+function configure_neovim() {
+    if [ -d ~/.config/nvim ]; then
+        gum style "Neovim is already configured." \
+            --foreground "212" | \
+            gum format
+        return
+    fi
+
+    git clone https://github.com/nicomiguelino/nvim.git ~/.config/nvim
+}
+
 function main() {
     install_prerequisites && clear
 
@@ -144,6 +171,12 @@ function main() {
 
     display_section "Install Node.js"
     install_nodejs
+
+    display_section "Install Snapd"
+    install_snapd
+
+    display_section "Install Neovim"
+    install_neovim
 }
 
 main
