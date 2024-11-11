@@ -109,12 +109,6 @@ function install_nodejs() {
     else
         local PLATFORM="armv7l"
     fi
-    # if either pi4 or pi5
-    if
-        local PLATFORM="arm64"
-    else
-        local PLATFORM="armv7l"
-    fi
 
     local ARCHIVE="node-${VERSION}-linux-${PLATFORM}.tar.xz"
     local NODE_HOME="$HOME/apps/node/current"
