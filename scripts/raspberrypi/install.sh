@@ -177,6 +177,9 @@ function main() {
 
     display_section "Install Neovim"
     install_neovim
+
+    display_section "Configure Neovim"
+    configure_neovim
 }
 
 main
