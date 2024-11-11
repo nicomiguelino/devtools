@@ -52,12 +52,15 @@ function display_section() {
 function install_apt_packages() {
     local APT_PACKAGES=(
         "curl"
+        "fzf"
         "git"
         "python3"
         "python3-dev"
         "python3-pip"
         "python3-venv"
         "ripgrep"
+        "tmux"
+        "tree"
     )
 
     sudo apt update -y
@@ -158,6 +161,30 @@ function configure_neovim() {
     git clone https://github.com/nicomiguelino/nvim.git ~/.config/nvim
 }
 
+function install_oh_my_tmux() {
+    local OMT_REPO_URL="https://github.com/gpakosz/.tmux.git"
+
+    if [ -d $HOME/.tmux ]; then
+        gum style "Oh My Tmux is already installed." \
+            --foreground "212" | \
+            gum format
+        return
+    fi
+
+    cd
+    git clone $OMT_REPO_URL
+    ln -s -f .tmux/.tmux.conf
+    cp .tmux/.tmux.conf.local .
+}
+
+function configure_oh_my_tmux() {
+    local REPOSITORY="$GITGUB_RAW_BASE/nicomiguelino/devtools"
+    local CONFIG_FILE=".tmux.conf.local"
+    local DOWNLOAD_URL="$REPOSITORY/main/common/$CONFIG_FILE"
+
+    wget -O $HOME/$CONFIG_FILE $DOWNLOAD_URL
+}
+
 function main() {
     install_prerequisites && clear
 
@@ -180,6 +207,12 @@ function main() {
 
     display_section "Configure Neovim"
     configure_neovim
+
+    display_section "Install Oh My Tmux"
+    install_oh_my_tmux
+
+    display_section "Configure Oh My Tmux"
+    configure_oh_my_tmux
 }
 
 main
