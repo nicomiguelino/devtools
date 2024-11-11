@@ -178,7 +178,7 @@ function install_oh_my_tmux() {
 }
 
 function configure_oh_my_tmux() {
-    local REPOSITORY="$GITGUB_RAW_BASE/nicomiguelino/devtools"
+    local REPOSITORY="$GITHUB_RAW_BASE/nicomiguelino/devtools"
     local CONFIG_FILE=".tmux.conf.local"
     local DOWNLOAD_URL="$REPOSITORY/main/common/$CONFIG_FILE"
 
