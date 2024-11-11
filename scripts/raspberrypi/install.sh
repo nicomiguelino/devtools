@@ -82,6 +82,8 @@ function install_oh_my_bash() {
 function get_raspberry_pi_version() {
     local PI_MODEL=$(cat /proc/device-tree/model)
 
+    if [[ $PI_MODEL == *"Raspberry Pi 5"* ]]; then
+        PI_VERSION="pi5"
     if [[ $PI_MODEL == *"Raspberry Pi 4"* ]]; then
         PI_VERSION="pi4"
     elif [[ $PI_MODEL == *"Raspberry Pi 3"* ]]; then
@@ -90,6 +92,7 @@ function get_raspberry_pi_version() {
         gum style "Unsupported Raspberry Pi model: $PI_MODEL" \
             --foreground "196" | \
             gum format
+        echo
         exit 1
     fi
 
@@ -101,17 +104,21 @@ function install_nodejs() {
     local DIST_URL="https://nodejs.org/dist"
 
     local RASPBERRY_PI_VERSION=$(get_raspberry_pi_version)
-    if [[ $RASPBERRY_PI_VERSION == "pi4" ]]; then
+    if [[ $RASPBERRY_PI_VERSION =~ "pi4|pi5" ]]; then
         local PLATFORM="arm64"
     else
         local PLATFORM="armv7l"
     fi
 
     local ARCHIVE="node-${VERSION}-linux-${PLATFORM}.tar.xz"
-    local NODE_HOME="$HOME/node-$VERSION-linux-$PLATFORM"
+    local NODE_HOME="$HOME/apps/node/current"
 
     local DOWNLOAD_URL="${DIST_URL}/${VERSION}/${ARCHIVE}"
     local ARCHIVE_PATH="/tmp/$ARCHIVE"
+    local NODE_DIR="$HOME/apps/node/node-$VERSION-linux-$PLATFORM"
+
+    mkdir -p $HOME/apps
+    mkdir -p $HOME/apps/node
 
     if [ -d $NODE_HOME ] && [ -x $NODE_HOME/bin/node ]; then
         gum style "Node.js is already installed." \
@@ -120,7 +127,8 @@ function install_nodejs() {
         export PATH=$NODE_HOME/bin:$PATH
     else
         wget -O $ARCHIVE_PATH $DOWNLOAD_URL
-        tar -xf $ARCHIVE_PATH -C $HOME
+        tar -xf $ARCHIVE_PATH -C $HOME/apps/node
+        ln -s $NODE_DIR $NODE_HOME
     fi
 
     if [[ "$PATH" =~ "$NODE_HOME" ]]; then
