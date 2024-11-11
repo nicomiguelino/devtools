@@ -142,6 +142,7 @@ function install_nodejs() {
             --foreground "212" | \
             gum format
     else
+        echo >> $HOME/.bashrc
         echo "export PATH=$NODE_HOME/bin:\$PATH" >> $HOME/.bashrc
     fi
 
