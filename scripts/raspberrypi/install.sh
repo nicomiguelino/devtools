@@ -84,7 +84,7 @@ function get_raspberry_pi_version() {
 
     if [[ $PI_MODEL == *"Raspberry Pi 5"* ]]; then
         PI_VERSION="pi5"
-    if [[ $PI_MODEL == *"Raspberry Pi 4"* ]]; then
+    elif [[ $PI_MODEL == *"Raspberry Pi 4"* ]]; then
         PI_VERSION="pi4"
     elif [[ $PI_MODEL == *"Raspberry Pi 3"* ]]; then
         PI_VERSION="pi3"
