@@ -42,5 +42,3 @@ jobs:
           prerelease: true
           artifacts: |
             ${{ github.workspace }}/devtools-${{ github.ref_name }}.zip
-          tag: ${{ github.ref_name }}
-          commit: ${{ github.sha }}
