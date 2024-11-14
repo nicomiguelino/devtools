@@ -27,7 +27,7 @@ jobs:
           if [[ $GITHUB_REF == refs/tags/v* ]]; then
             echo "APP_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
           else
-            echo "APP_VERSION=x.x.x" >> $GITHUB_ENV
+            echo "APP_VERSION=0.0.0" >> $GITHUB_ENV
           fi
 
       - name: Compress and Generate Archive
