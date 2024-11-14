@@ -22,8 +22,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Initialize Environment Variables
+        run: |
+          # Create an environment variable called APP_VERSION.
+          # If the tag is v1.0.0, the APP_VERSION will be 1.0.0.
+          echo "APP_VERSION=${GITHUB_REF#/refs/tags}" >> $GITHUB_ENV
+
       - name: Compress and Generate Archive
         run: |
+          echo "APP_VERSION=${APP_VERSION:-0.0.0}"
           echo 'Hello, Galaxy!' >> message.txt
           echo 'Commit: ${{ github.sha }}' >> message.txt
           zip -r ${{ github.workspace }}/devtools.zip message.txt
