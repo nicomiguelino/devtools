@@ -27,8 +27,7 @@ jobs:
         run: |
           # Create an environment variable called APP_VERSION.
           # If the tag is v1.0.0, the APP_VERSION will be 1.0.0.
-          # echo "APP_VERSION={{ github.ref_name | replace('v', '') }}" >> $GITHUB_ENV
-          echo "APP_VERSION={{ github.ref_name }}" >> $GITHUB_ENV
+          echo "APP_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
       - name: Compress and Generate Archive
         run: |
