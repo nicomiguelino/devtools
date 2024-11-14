@@ -24,7 +24,7 @@ jobs:
 
       - name: Compress and Generate Archive
         run: |
-          echo 'Hello, World!' >> message.txt
+          echo 'Hello, Galaxy!' >> message.txt
           zip -r ${{ github.workspace }}/devtools.zip message.txt
 
       - name: Prepare Release
