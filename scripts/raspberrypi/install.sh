@@ -204,7 +204,7 @@ function install_docker() {
 
     # Add the repository to Apt sources:
     echo \
-    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+    "deb [arch=armhf signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
     $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
     sudo apt-get update
@@ -250,8 +250,8 @@ function main() {
     display_section "Configure Oh My Tmux"
     configure_oh_my_tmux
 
-    display_section "Install Docker"
-    install_docker
+    # display_section "Install Docker"
+    # install_docker
 
     display_section "Installation Complete"
     gum style "Please restart your shell to apply changes." \
