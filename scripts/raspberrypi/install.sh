@@ -3,6 +3,12 @@
 set -euo pipefail
 
 GITHUB_RAW_BASE="https://raw.githubusercontent.com"
+INSTALL_DOCKER="${INSTALL_DOCKER:-0}"
+
+if (( INSTALL_DOCKER != 0 && INSTALL_DOCKER != 1 )); then
+    echo "INSTALL_DOCKER should only be 0 or 1"
+    exit 1
+fi
 
 function install_prerequisites() {
     if [ -f /usr/bin/gum ]; then
@@ -250,8 +256,10 @@ function main() {
     display_section "Configure Oh My Tmux"
     configure_oh_my_tmux
 
-    display_section "Install Docker"
-    install_docker
+    if (( INSTALL_DOCKER == 1 )); then
+        display_section "Install Docker"
+        install_docker
+    fi
 
     display_section "Installation Complete"
     gum style "Please restart your shell to apply changes." \
