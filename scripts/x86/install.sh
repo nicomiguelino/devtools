@@ -235,8 +235,9 @@ function main() {
     display_section "Configure Oh My Tmux"
     configure_oh_my_tmux
 
-    display_section "Install Docker"
-    install_docker
+    # TODO: Uncomment this block if you want to install Docker.
+    # display_section "Install Docker"
+    # install_docker
 
     display_section "Install GitHub CLI"
     install_github_cli
