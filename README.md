@@ -6,7 +6,7 @@ machines running Linux.
 
 ## Installation
 
-### Raspberry Pi OS Lite (Bookworm)
+### Raspberry Pi OS Lite (Bookworm/Debian 12)
 
 Debian 12 (Bookworm) and later is required to run the installation script.
 
@@ -14,7 +14,7 @@ Debian 12 (Bookworm) and later is required to run the installation script.
 bash <(curl -sL https://raw.githubusercontent.com/nicomiguelino/devtools/main/scripts/raspberrypi/install.sh)
 ```
 
-### x86 (Bookworm)
+### x86 (Bookworm/Debian 12)
 
 Debian 12 (Bookworm) and later is required to run the installation script.
 
