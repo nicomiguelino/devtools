@@ -14,10 +14,10 @@ Debian 12 (Bookworm) and later is required to run the installation script.
 bash <(curl -sL https://raw.githubusercontent.com/nicomiguelino/devtools/main/scripts/raspberrypi/install.sh)
 ```
 
-### x86 (Bookworm/Debian 12)
+### x86 (Debian 12 Bookworm)
 
 Debian 12 (Bookworm) and later is required to run the installation script.
 
 ```bash
-bash <(curl -sL https://raw.githubusercontent.com/nicomiguelino/devtools/main/scripts/x86/install.sh)
+bash <(curl -sL https://raw.githubusercontent.com/nicomiguelino/devtools/main/scripts/x86/debian/12/install.sh)
 ```

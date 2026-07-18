@@ -1,0 +1,4 @@
+interface:
+  display_name: "Commit Changes"
+  short_description: "Create concise Conventional Commits"
+  default_prompt: "Use $commit-changes to create a focused Conventional Commit for the current changes."
