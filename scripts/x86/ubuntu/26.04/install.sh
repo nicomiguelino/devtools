@@ -58,6 +58,7 @@ install_apt_packages() {
     sudo apt-get install -y \
         build-essential \
         fzf \
+        gh \
         htop \
         python3 \
         python3-dev \
