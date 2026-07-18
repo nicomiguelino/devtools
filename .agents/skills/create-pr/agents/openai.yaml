@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Pull Request"
+  short_description: "Open concise Conventional Commit PRs"
+  default_prompt: "Use $create-pr to open a concise pull request against the repository default branch."
